@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Algebra_Seminar_Drdic.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Algebra_Seminar_Drdic.Data
@@ -9,5 +10,8 @@ namespace Algebra_Seminar_Drdic.Data
             : base(options)
         {
         }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<ProductCategory> ProductCategories { get; set; }
     }
 }
