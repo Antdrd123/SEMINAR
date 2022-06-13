@@ -27,7 +27,7 @@ namespace Algebra_Seminar_Drdic.Models
         [Column(TypeName = "decimal(9,2)")]
         public decimal Price { get; set; }
 
-        [Required]
+        
         [Column(TypeName = "nvarchar(1000)")]
         public string ImageName { get; set; }
     }

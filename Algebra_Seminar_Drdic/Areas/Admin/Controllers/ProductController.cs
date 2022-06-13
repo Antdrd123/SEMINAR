@@ -30,7 +30,7 @@ namespace Algebra_Seminar_Drdic.Controllers
         // GET: ProductController/Create
         public ActionResult Create()
         {
-            
+               
             return View();
         }
 
@@ -41,6 +41,8 @@ namespace Algebra_Seminar_Drdic.Controllers
         {
             try
             {
+
+
                 return RedirectToAction(nameof(Index));
             }
             catch

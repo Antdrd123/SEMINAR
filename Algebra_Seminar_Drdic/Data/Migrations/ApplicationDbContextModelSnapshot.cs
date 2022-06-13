@@ -114,7 +114,7 @@ namespace Algebra_Seminar_Drdic.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("Algebra_Seminar_Drdic.Models.Product", b =>
@@ -145,7 +145,7 @@ namespace Algebra_Seminar_Drdic.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("Algebra_Seminar_Drdic.Models.ProductCategory", b =>
@@ -168,7 +168,7 @@ namespace Algebra_Seminar_Drdic.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductCategories");
+                    b.ToTable("ProductCategories", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
