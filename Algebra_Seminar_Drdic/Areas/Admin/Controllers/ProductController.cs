@@ -1,4 +1,5 @@
 ﻿using Algebra_Seminar_Drdic.Data;
+using Algebra_Seminar_Drdic.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -30,24 +31,61 @@ namespace Algebra_Seminar_Drdic.Controllers
         // GET: ProductController/Create
         public ActionResult Create()
         {
-               
             return View();
         }
 
         // POST: ProductController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Product product, int[] category_id, IFormFile Image)
         {
+            if (category_id.Length == 0)
+            {
+                return RedirectToAction("Create", new { error_message = "Molimo odaberite minimalno jednu kategoriju!" });
+            }
+
             try
             {
+               
+                if (product.ImageName != null && product.ImageName.Length > 0)
+                {
+                    var image_name = DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + "-" + Image.FileName.ToLower();
+
+                    var save_image_path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", image_name);
+
+                    using (var stream = new FileStream(save_image_path, FileMode.Create))
+                    {
+                        Image.CopyTo(stream);
+                    }
+                    product.ImageName = image_name;
+                }
+                else
+                {
+
+                }
+
+                
+
+                _context.Products.Add(product);
+                _context.SaveChanges();
+
+                int productId = product.Id;
+
+                foreach (var category in category_id)
+                {
+                    ProductCategory productCategory = new ProductCategory();
+                    productCategory.ProductId = productId;
+                    productCategory.CategoryId = category;
+                }
+
+                _context.SaveChanges();
 
 
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return RedirectToAction("Create", new { msg = "Nevaljan unos. Pokušajte ponovo!" });
             }
         }
 

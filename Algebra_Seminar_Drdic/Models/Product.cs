@@ -29,6 +29,6 @@ namespace Algebra_Seminar_Drdic.Models
 
         
         [Column(TypeName = "nvarchar(1000)")]
-        public string ImageName { get; set; }
+        public string? ImageName { get; set; }
     }
 }
