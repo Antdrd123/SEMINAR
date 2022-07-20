@@ -1,6 +1,8 @@
 using Algebra_Seminar_Drdic.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +35,27 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+var defaultDateCulture = "de-De";
+var ci = new CultureInfo(defaultDateCulture);
+
+ci.NumberFormat.NumberDecimalSeparator = ".";
+ci.NumberFormat.CurrencyDecimalSeparator = ".";
+
+app.UseRequestLocalization(
+    new RequestLocalizationOptions
+    {
+        DefaultRequestCulture = new RequestCulture(ci),
+        SupportedCultures = new List<CultureInfo>
+        {
+            ci
+        },
+        SupportedUICultures = new List<CultureInfo>
+        {
+            ci
+        }
+    }
+    );
 
 app.UseRouting();
 

@@ -9,16 +9,12 @@
         {
             @if (Model.Find(cat => cat.Id == category.Id) != null)
             {
-
                 <input class="form-check-input" type="checkbox" name="category_id" value="@category.Id" checked>
-
             }
             else
             {
-
                 <input class="form-check-input" type="checkbox" name="category_id" value="@category.Id">
             }
-
         }
         else
         {

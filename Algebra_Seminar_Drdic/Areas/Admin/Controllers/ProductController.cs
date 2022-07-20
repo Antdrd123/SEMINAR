@@ -27,7 +27,10 @@ namespace Algebra_Seminar_Drdic.Controllers
         {
             var product = _context.Products.FirstOrDefault(p => p.Id == id);
             return View(product);
+
+            //List<Category> categories = _context.ProductCategories.Where(c => c.ProductId == id).Select(c )
         }
+
 
         // GET: ProductController/Create
         public ActionResult Create()
@@ -42,12 +45,12 @@ namespace Algebra_Seminar_Drdic.Controllers
         {
             if (category_id.Length == 0)
             {
-                return RedirectToAction("Create", new { error_message = "Molimo odaberite minimalno jednu kategoriju!" });
+                TempData["AlertMessageF"] = "Odaberite kategoriju proizvoda!";
+                return RedirectToAction("Create");
             }
 
             try
             {
-               
                
                     var image_name = DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + "-" + picture.FileName.ToLower();
 
@@ -58,6 +61,8 @@ namespace Algebra_Seminar_Drdic.Controllers
                         picture.CopyTo(stream);
                     }
                     product.ImageName = image_name;
+                
+             
               
 
                 _context.Products.Add(product);
@@ -70,6 +75,7 @@ namespace Algebra_Seminar_Drdic.Controllers
                     ProductCategory productCategory = new ProductCategory();
                     productCategory.ProductId = productId;
                     productCategory.CategoryId = category;
+                    _context.ProductCategories.Add(productCategory);
                 }
 
                 _context.SaveChanges();
@@ -79,7 +85,8 @@ namespace Algebra_Seminar_Drdic.Controllers
             }
             catch
             {
-                return RedirectToAction("Create", new { msg = "Nevaljan unos. Pokušajte ponovo!" });
+                
+                return RedirectToAction("Create");
             }
         }
 
@@ -93,7 +100,7 @@ namespace Algebra_Seminar_Drdic.Controllers
 
             return View(product);
         }
-
+        
         // POST: ProductController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]

@@ -1,5 +1,6 @@
 ﻿@model Algebra_Seminar_Drdic.Models.Product
 
+
 @{
     ViewData["Title"] = "Edit";
 }
@@ -37,9 +38,11 @@
                 <label>Ucitaj sliku</label>
                 <input type="file" name="picture" class="form-control" />
             </div>
+            <partial name="~/Areas/Admin/Views/Shared/_SelectCategoryPartial.cshtml" model="ViewBag.SelectedCategories"/>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
+            
         </form>
     </div>
 </div>
