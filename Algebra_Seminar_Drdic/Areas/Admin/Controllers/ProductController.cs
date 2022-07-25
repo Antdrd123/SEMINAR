@@ -23,6 +23,9 @@ namespace Algebra_Seminar_Drdic.Controllers
         // GET: ProductController/Details/5
         public ActionResult Details(int id)
         {
+            var categories = _context.ProductCategories.Where(c => c.CategoryId == id).Select(c => c.Category.Title);
+            ViewBag.CategoryDetails = categories;
+
             var product = _context.Products.FirstOrDefault(p => p.Id == id);
             return View(product);
 

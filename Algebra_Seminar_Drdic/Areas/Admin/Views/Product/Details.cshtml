@@ -34,9 +34,17 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Price)
         </dd>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImageName)
-        </dd>
+          <dl class="row">
+            <dt class="col-sm-2">Category</dt>
+
+            @foreach (var items in ViewBag.CategoryDetails)
+            {
+                <dt class="col-sm-2"></dt>
+                <dd class="col-sm-10">
+                    @items
+                </dd>   
+            }
+        </dl>
     </dl>
 </div>
 <div>
