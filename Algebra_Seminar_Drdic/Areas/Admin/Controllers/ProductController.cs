@@ -1,9 +1,7 @@
 ﻿using Algebra_Seminar_Drdic.Data;
 using Algebra_Seminar_Drdic.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Algebra_Seminar_Drdic.Controllers
 {
@@ -51,19 +49,19 @@ namespace Algebra_Seminar_Drdic.Controllers
 
             try
             {
-               
-                    var image_name = DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + "-" + picture.FileName.ToLower();
 
-                    var save_image_path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/pictures", image_name);
+                var image_name = DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + "-" + picture.FileName.ToLower();
 
-                    using (var stream = new FileStream(save_image_path, FileMode.Create))
-                    {
-                        picture.CopyTo(stream);
-                    }
-                    product.ImageName = image_name;
-                
-             
-              
+                var save_image_path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/pictures", image_name);
+
+                using (var stream = new FileStream(save_image_path, FileMode.Create))
+                {
+                    picture.CopyTo(stream);
+                }
+                product.ImageName = image_name;
+
+
+
 
                 _context.Products.Add(product);
                 _context.SaveChanges();
@@ -85,7 +83,7 @@ namespace Algebra_Seminar_Drdic.Controllers
             }
             catch
             {
-                
+
                 return RedirectToAction("Create");
             }
         }
@@ -93,6 +91,7 @@ namespace Algebra_Seminar_Drdic.Controllers
         // GET: ProductController/Edit/5
         public ActionResult Edit(int id)
         {
+
             List<Category> categories = _context.ProductCategories.Where(pc => pc.ProductId == id).Select(pc => pc.Category).ToList();
             ViewBag.SelectedCategories = categories;
 
@@ -100,33 +99,51 @@ namespace Algebra_Seminar_Drdic.Controllers
 
             return View(product);
         }
-        
+
         // POST: ProductController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Product product, int[] category_id)
+        public ActionResult Edit(Product product, int[] category_id, IFormFile picture)
         {
             try
             {
+                if (category_id.Length == 0)
+                {
+                    TempData["AlertMessageF"] = "Odaberite kategoriju proizvoda!";
+                    return RedirectToAction("Edit");
+                }
+
                 _context.Products.Update(product);
 
-                List<ProductCategory> category = _context.ProductCategories.Where(c => c.Id == product.Id).ToList();
-                _context.ProductCategories.RemoveRange(category);
+                List<ProductCategory> productcategories = _context.ProductCategories.Where(pc => pc.ProductId == product.Id).ToList();
 
-                foreach (var cat in category_id)
+                _context.ProductCategories.RemoveRange(productcategories);
+
+                
+                if(picture != null)
                 {
+                    var image_name = DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + "-" + picture.FileName.ToLower();
 
-                    ProductCategory ProductCategory = new ProductCategory();
-                    ProductCategory.ProductId = product.Id;
-                    ProductCategory.CategoryId = cat;
+                    var save_image_path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/pictures", image_name);
 
-                    _context.ProductCategories.Add(ProductCategory);
+                    using (var stream = new FileStream(save_image_path, FileMode.Create))
+                    {
+                        picture.CopyTo(stream);
+                    }
+                    product.ImageName = image_name;
+                }
 
+                foreach (var category in category_id)
+                {
+                    var productCategory = new ProductCategory();
+                    productCategory.ProductId = product.Id;
+                    productCategory.CategoryId = category;
+
+                    _context.ProductCategories.Add(productCategory);
                 }
 
                 _context.SaveChanges();
-
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index");
             }
             catch
             {
@@ -139,11 +156,13 @@ namespace Algebra_Seminar_Drdic.Controllers
         {
             var product = _context.Products.SingleOrDefault(p => p.Id == id);
 
-           
+
             if (product == null)
             {
                 return RedirectToAction("Index", new { msg = "Proizvod ne postoji!" });
             }
+            var categories = _context.ProductCategories.Where(pc => pc.ProductId == id).Select(pc => pc.Category.Title);
+            ViewBag.CategoriesDelete = categories;
 
             return View(product);
         }
@@ -157,9 +176,12 @@ namespace Algebra_Seminar_Drdic.Controllers
             {
                 var delete_product = _context.Products.SingleOrDefault(pr => pr.Id == product.Id);
 
+                
+
                 if (delete_product == null)
                 {
-                    return View("Delete", new { msg = "Unknown product!" });
+                    TempData["AlertMessageD"] = "Nepostojeći proizvod!";
+                    return RedirectToAction("Delete");
                 }
                 _context.Products.Remove(delete_product);
                 _context.SaveChanges();
