@@ -1,5 +1,4 @@
 ﻿using Algebra_Seminar_Drdic.Data;
-using Algebra_Seminar_Drdic.Interfaces;
 using Algebra_Seminar_Drdic.Models;
 using Algebra_Seminar_Drdic.Repositories;
 using Microsoft.AspNetCore.Http;

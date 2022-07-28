@@ -1,6 +1,5 @@
 
 using Algebra_Seminar_Drdic.Data;
-using Algebra_Seminar_Drdic.Interfaces;
 using Algebra_Seminar_Drdic.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
