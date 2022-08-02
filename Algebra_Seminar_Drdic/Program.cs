@@ -1,4 +1,5 @@
 using Algebra_Seminar_Drdic.Data;
+using Algebra_Seminar_Drdic.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;

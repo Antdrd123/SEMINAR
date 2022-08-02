@@ -1,7 +1,8 @@
-﻿@using Algebra_Seminar_Drdic.Data
+﻿
+@using Algebra_Seminar_Drdic.Data
 @using Microsoft.AspNetCore.Identity
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<Algebra_Seminar_Drdic.Models.ApplicationUser> SignInManager
+@inject UserManager<Algebra_Seminar_Drdic.Models.ApplicationUser> UserManager
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))

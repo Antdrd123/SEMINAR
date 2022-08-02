@@ -6,18 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Algebra_Seminar_Drdic.Data
 {
-    public class ApplicationUser : IdentityUser
-    {
-        [StringLength(50)]
-        public string? FirstName { get; set; }
 
-        [StringLength(50)]
-        public string? LastName { get; set; }
-
-        [StringLength(100)]
-        public string? Address { get; set; }
-
-    }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
@@ -35,5 +24,7 @@ namespace Algebra_Seminar_Drdic.Data
 
             base.OnModelCreating(modelBuilder);
         }
+
+        public DbSet<Algebra_Seminar_Drdic.Models.HelperUser>? HelperUser { get; set; }
     }
 }
