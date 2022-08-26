@@ -1,10 +1,13 @@
 ﻿using Algebra_Seminar_Drdic.Data;
 using Algebra_Seminar_Drdic.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Algebra_Seminar_Drdic.Controllers
 {
+    [Area("Admin")]
+    [Authorize]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -32,6 +35,10 @@ namespace Algebra_Seminar_Drdic.Controllers
         public ActionResult Details(string id) //??
         {
             var user = _context.Users.FirstOrDefault(u => u.Id == id);
+            
+            var roleId = _context.UserRoles.FirstOrDefault(ur => ur.UserId == id).RoleId;
+            var roleName = _context.Roles.FirstOrDefault(u => u.Id == roleId).Name;
+            ViewBag.UserRole = roleName;
 
             return View(user);
         }
@@ -39,14 +46,29 @@ namespace Algebra_Seminar_Drdic.Controllers
         // GET: CategoryController/Create
         public ActionResult Create()
         {
+            var roles = _context.Roles.ToList();
+            ViewBag.Roles = roles;
+
             return View();
         }
 
         // POST: CategoryController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Category category)
+        public ActionResult Create(ApplicationUser user, string roleName, string password, string confirmPassword)
         {
+            if (!ModelState.IsValid)
+            {
+                TempData["AlertMessageC"] = "Ispunite sva polja!";
+                return RedirectToAction("Create");
+                
+            }
+            if (password != confirmPassword)
+            {
+                TempData["AllertMessageD"] = "Lozinka nije potvrđena. Ponovite unos!";
+                return RedirectToAction("Create");
+            }
+
             try
             {
                 return RedirectToAction(nameof(Index));
@@ -60,6 +82,9 @@ namespace Algebra_Seminar_Drdic.Controllers
         // GET: CategoryController/Edit/5
         public ActionResult Edit(string id)
         {
+            var roles = _context.Roles.ToList();
+            ViewBag.Roles = roles;
+
             var user = _context.Users.FirstOrDefault(u =>u.Id == id);
 
             return View(user);
@@ -68,11 +93,35 @@ namespace Algebra_Seminar_Drdic.Controllers
         // POST: CategoryController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Category category)
+        public ActionResult Edit(ApplicationUser user, string roleName, string password, string confirmPassword)
         {
+            if (!ModelState.IsValid)
+            {
+                TempData["AlertMessageE"] = "Ispunite sva polja!";
+                return RedirectToAction("Edit");
+
+            }
+            if (password != confirmPassword)
+            {
+                TempData["AllertMessageF"] = "Lozinka nije potvrđena. Ponovite unos!";
+                return RedirectToAction("Edit");
+            }
+
             try
             {
+                if(password == confirmPassword)
+                {
+                    var hasher = new PasswordHasher<ApplicationUser>();
+
+                    var passwordHash = hasher.HashPassword(null, password);
+
+                    user.PasswordHash = passwordHash;
+                }
+              
                 
+                
+                _context.Users.Add(user);
+                _context.SaveChanges();
 
                 return RedirectToAction(nameof(Index));
             }
@@ -85,6 +134,10 @@ namespace Algebra_Seminar_Drdic.Controllers
         // GET: CategoryController/Delete/5
         public ActionResult Delete(string id)
         {
+            var roleId = _context.UserRoles.FirstOrDefault(ri => ri.UserId == id).RoleId;
+            var userRole = _context.Roles.FirstOrDefault(ur => ur.Id == roleId).Name;
+            ViewBag.UserRole = userRole;
+
             var user = _context.Users.FirstOrDefault(u => u.Id == id);
             return View(user);
         }

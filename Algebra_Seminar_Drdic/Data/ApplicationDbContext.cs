@@ -25,6 +25,6 @@ namespace Algebra_Seminar_Drdic.Data
             base.OnModelCreating(modelBuilder);
         }
 
-        public DbSet<Algebra_Seminar_Drdic.Models.HelperUser>? HelperUser { get; set; }
+        public DbSet<Algebra_Seminar_Drdic.Models.ApplicationUser>? HelperUser { get; set; }
     }
 }

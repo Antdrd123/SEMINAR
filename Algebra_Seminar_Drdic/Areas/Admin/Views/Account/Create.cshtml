@@ -1,10 +1,23 @@
-﻿@model Algebra_Seminar_Drdic.Models.HelperUser
+﻿@model Algebra_Seminar_Drdic.Models.ApplicationUser
 
 @{
     ViewData["Title"] = "Create";
 }
 
 <h1>Create</h1>
+
+@if(TempData["AlertMessageC"] != null)
+{
+    <div class="alert alert-warning">
+        <strong>Upozorenje!</strong> @TempData["AlertMessageC"]
+    </div>
+}
+@if(TempData["AlertMessageD"] != null)
+{
+    <div class="alert alert-warning">
+        <strong>Upozorenje!</strong> @TempData["AlertMessageD"]
+    </div>
+}
 
 <h4>HelperUser</h4>
 <hr />
@@ -32,21 +45,30 @@
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
+           <div class="form-group">
+                <label>Password</label>
+                <input name = "Password" class="form-control" />
+                <small id="emailHelp" class="form-text text-muted">Ponovite lozinku!</small>
             </div>
             <div class="form-group">
-                <label asp-for="ConfirmPassword" class="control-label"></label>
-                <input asp-for="ConfirmPassword" class="form-control" />
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                <label>Confirm password</label>
+                <input name = "confirmPassword" class="form-control" />
+                <small id="emailHelp" class="form-text text-muted">Ponovite lozinku!</small>
             </div>
-            <div class="form-group">
-                <label asp-for="Role" class="control-label"></label>
-                <input asp-for="Role" class="form-control" />
-                <span asp-validation-for="Role" class="text-danger"></span>
+       
+
+            <div class="col-md-4 mb-3">
+                <label>Roles</label>f
+                <select class="form-control" name="roleName" >
+                    <option value ="">-- Select country --</option>    
+                    @foreach(var role in ViewBag.Roles)
+                    {
+                        <option value="@role.Value">@role.Text</option>
+                    }
+
+                </select>
             </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -59,5 +81,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
 }

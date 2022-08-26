@@ -1,4 +1,4 @@
-﻿@model Algebra_Seminar_Drdic.Models.HelperUser
+﻿@model Algebra_Seminar_Drdic.Models.ApplicationUser
 
 @{
     ViewData["Title"] = "Edit";
@@ -6,13 +6,31 @@
 
 <h1>Edit</h1>
 
+@if(TempData["AlertMessageE"] != null)
+{
+    <div class="alert alert-warning">
+        <strong>Upozorenje!</strong> @TempData["AlertMessageE"]
+    </div>
+}
+@if(TempData["AlertMessageF"] != null)
+{
+    <div class="alert alert-warning">
+        <strong>Upozorenje!</strong> @TempData["AlertMessageF"]
+    </div>
+}
+
 <h4>HelperUser</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="id" />
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
                 <input asp-for="FirstName" class="form-control" />
@@ -34,20 +52,31 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
+                <label>Password</label>
+                <input type="Password" class="form-control"
+                <small id="emailHelp" class="form-text text-muted">Ponovite lozinku!</small>
             </div>
-            <div class="form-group">
-                <label asp-for="ConfirmPassword" class="control-label"></label>
-                <input asp-for="ConfirmPassword" class="form-control" />
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+           
+             <div class="form-group">
+                <label>Confirm password</label>
+                <input name="ConfirmPassword" class="form-control"
+                <small id="emailHelp" class="form-text text-muted">Ponovite lozinku!</small>
             </div>
-            <div class="form-group">
-                <label asp-for="Role" class="control-label"></label>
-                <input asp-for="Role" class="form-control" />
-                <span asp-validation-for="Role" class="text-danger"></span>
+       
+            
+            <div class="col-md-4 mb-3">
+                <label>Roles</label>
+                <select class="form-control" name="roleName" >
+                    <option value ="">-- Select role --</option>    
+                    @foreach(var role in @ViewBag.Roles)
+                    {
+                        <option value="@role.">@role.</option>
+                    }
+
+                </select>
             </div>
+           
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
