@@ -3,6 +3,7 @@ using Algebra_Seminar_Drdic.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace Algebra_Seminar_Drdic.Controllers
 {
@@ -29,7 +30,6 @@ namespace Algebra_Seminar_Drdic.Controllers
 
             return View(users);
         }
-
 
         // GET: CategoryController/Details/5
         public ActionResult Details(string id) //??
@@ -71,6 +71,27 @@ namespace Algebra_Seminar_Drdic.Controllers
 
             try
             {
+                if (password == confirmPassword)
+                {
+                    var hasher = new PasswordHasher<ApplicationUser>();
+
+                    var passwordHash = hasher.HashPassword(null, password);
+
+                    user.PasswordHash = passwordHash;
+                }
+
+                _context.Users.Add(user);
+
+                var roleid = _context.Roles.FirstOrDefault(ri => ri.Name == roleName).Id;
+
+                IdentityUserRole<string> userole = new IdentityUserRole<string>();
+                userole.UserId = user.Id;
+                userole.RoleId = roleid;
+
+                _context.UserRoles.Add(userole);
+
+                _context.SaveChanges();
+
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -109,6 +130,7 @@ namespace Algebra_Seminar_Drdic.Controllers
 
             try
             {
+
                 if(password == confirmPassword)
                 {
                     var hasher = new PasswordHasher<ApplicationUser>();
@@ -117,17 +139,33 @@ namespace Algebra_Seminar_Drdic.Controllers
 
                     user.PasswordHash = passwordHash;
                 }
-              
-                
-                
-                _context.Users.Add(user);
+                var oldUser = _context.Users.FirstOrDefault(ou => ou.Id == user.Id);
+                oldUser.UserName = user.UserName;
+
+                //var userRole = _context.UserRoles.Where(u => u.UserId == user.Id).FirstOrDefault();
+                //_context.UserRoles.Remove(userRole);
+                //_context.SaveChanges();
+
+
+                //dohvati role id!
+                //var roleid = _context.Roles.FirstOrDefault(ri => ri.Name == roleName).Id;
+
+                //IdentityUserRole<string> userole = new IdentityUserRole<string>();
+                //userole.UserId = user.Id;
+                //userole.RoleId = roleid;
+
+                //_context.UserRoles.Add(userole);
+
+
+                _context.Users.Update(oldUser);
+                //_context.Users.Add(user);
                 _context.SaveChanges();
 
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch(DBConcurrencyException dbcx)
             {
-                return View();
+                return RedirectToAction("Edit", new { error_message = dbcx.Message });
             }
         }
 
