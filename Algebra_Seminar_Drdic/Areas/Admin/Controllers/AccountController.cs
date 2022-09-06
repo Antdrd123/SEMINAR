@@ -141,6 +141,10 @@ namespace Algebra_Seminar_Drdic.Controllers
                 }
                 var oldUser = _context.Users.FirstOrDefault(ou => ou.Id == user.Id);
                 oldUser.UserName = user.UserName;
+                oldUser.Email = user.Email;
+                oldUser.FirstName = user.FirstName;
+                oldUser.LastName = user.LastName;
+                
 
                 //var userRole = _context.UserRoles.Where(u => u.UserId == user.Id).FirstOrDefault();
                 //_context.UserRoles.Remove(userRole);
@@ -183,10 +187,15 @@ namespace Algebra_Seminar_Drdic.Controllers
         // POST: CategoryController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(Category category)
+        public ActionResult Delete(ApplicationUser user)
         {
             try
             {
+                var userRole = _context.UserRoles.SingleOrDefault(ur => ur.UserId == user.Id);
+                _context.UserRoles.Remove(userRole);
+
+                _context.Users.Remove(user);
+                _context.SaveChanges();
 
                 return RedirectToAction(nameof(Index));
             }

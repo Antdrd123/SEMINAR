@@ -177,6 +177,10 @@ namespace Algebra_Seminar_Drdic.Controllers
         {
             try
             {
+
+                var productCategory = _context.ProductCategories.FirstOrDefault(pc => pc.Id == product.Id);
+                _context.ProductCategories.Remove(productCategory);
+
                 var delete_product = _context.Products.SingleOrDefault(pr => pr.Id == product.Id);
 
                 
