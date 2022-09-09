@@ -8,7 +8,7 @@ using System.Data;
 namespace Algebra_Seminar_Drdic.Controllers
 {
     [Area("Admin")]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -80,6 +80,11 @@ namespace Algebra_Seminar_Drdic.Controllers
                     user.PasswordHash = passwordHash;
                 }
 
+                user.UserName = user.Email;
+                user.NormalizedUserName = user.Email.ToUpper();
+                user.NormalizedEmail = user.Email.ToUpper();
+
+
                 _context.Users.Add(user);
 
                 var roleid = _context.Roles.FirstOrDefault(ri => ri.Name == roleName).Id;
@@ -88,6 +93,7 @@ namespace Algebra_Seminar_Drdic.Controllers
                 userole.UserId = user.Id;
                 userole.RoleId = roleid;
 
+                
                 _context.UserRoles.Add(userole);
 
                 _context.SaveChanges();
@@ -140,25 +146,11 @@ namespace Algebra_Seminar_Drdic.Controllers
                     user.PasswordHash = passwordHash;
                 }
                 var oldUser = _context.Users.FirstOrDefault(ou => ou.Id == user.Id);
-                oldUser.UserName = user.UserName;
+                oldUser.UserName = user.Email;
+                oldUser.NormalizedUserName = user.Email.ToUpper();
                 oldUser.Email = user.Email;
                 oldUser.FirstName = user.FirstName;
                 oldUser.LastName = user.LastName;
-                
-
-                //var userRole = _context.UserRoles.Where(u => u.UserId == user.Id).FirstOrDefault();
-                //_context.UserRoles.Remove(userRole);
-                //_context.SaveChanges();
-
-
-                //dohvati role id!
-                //var roleid = _context.Roles.FirstOrDefault(ri => ri.Name == roleName).Id;
-
-                //IdentityUserRole<string> userole = new IdentityUserRole<string>();
-                //userole.UserId = user.Id;
-                //userole.RoleId = roleid;
-
-                //_context.UserRoles.Add(userole);
 
 
                 _context.Users.Update(oldUser);
@@ -187,12 +179,19 @@ namespace Algebra_Seminar_Drdic.Controllers
         // POST: CategoryController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(ApplicationUser user)
+        public ActionResult Delete(string id, string roleName)
         {
             try
             {
-                var userRole = _context.UserRoles.SingleOrDefault(ur => ur.UserId == user.Id);
-                _context.UserRoles.Remove(userRole);
+             
+                var userRole = _context.UserRoles.SingleOrDefault(ur => ur.UserId == id);
+                var role = _context.Roles.FirstOrDefault(u => u.Id == userRole.RoleId).Name;
+                var user = _context.Users.Where(u => u.Id == id).FirstOrDefault();
+                
+                if(roleName == role)
+                    _context.UserRoles.Remove(userRole);
+                
+                
 
                 _context.Users.Remove(user);
                 _context.SaveChanges();
