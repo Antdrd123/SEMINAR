@@ -27,6 +27,36 @@ namespace Algebra_Seminar_Drdic.Controllers
             return View();
         }
 
+        public IActionResult Product(int categoryId)
+        {
+            ViewBag.Categories = _context.Categories.ToList();
+
+            if(categoryId != 0)
+            {
+                //NEKUZIM
+                List<Product> products = _context.Products.Where(p => _context.ProductCategories.Where(pc => pc.CategoryId == categoryId).Select(pc => pc.ProductId).ToList().Contains(p.Id)).ToList();
+                return View(products);
+            }
+            else
+            {
+               var products2 = _context.Products.ToList();
+                return View(products2);
+            }
+            
+        }
+
+        public IActionResult Details(int id)
+        {
+            var categories = _context.ProductCategories.Where(c => c.ProductId == id).Select(c => c.Category.Title).ToList();
+            ViewBag.CategoryDetails = categories;
+
+            var product = _context.Products.FirstOrDefault(p => p.Id == id);
+            return View(product);
+
+
+        }
+
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

@@ -1,0 +1,72 @@
+﻿@model List<Product>
+
+        <h2>Product list</h2>
+<hr />
+
+<div class="row mb-5">
+    
+   <div class="col-6">
+
+        <form method="GET" asp-area="" asp-controller="Home" asp-action="Product">
+
+            <div class="input-group mb-3">
+                    
+                <select class="form-select" id="floatingSelect" name="categoryId"> @*Zasto name?-zbog rezultata na bekendu*@
+                    <option value="" selected>All</option>
+                    @foreach(var category in ViewBag.Categories)
+                    { 
+                    <option value="@category.Id">@category.Title</option>
+                    }
+                </select>
+                   
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </div>
+            </div>
+           
+        </form>
+        
+    </div>
+</div>
+
+<div class="row">
+    @*Ispis svih proizvoda*@
+    @foreach(var item in Model)
+    {
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+
+                    @if(item.ImageName != null)
+                    {
+                        <p>
+                            <img src="~/images/@item.ImageName" style="width:100%; height=250px">
+                        </p>
+                    }
+
+                <h5 class="card-title">@item.Title</h5>
+                <p class="card-text">@item.Description</p>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Price</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>@item.Price kn</td>
+                            <td class="text-start"></td>
+                            <a href="@Url.Action("Details","Home", new {Id=@item.Id})"
+                               class="btn btn-primary btn-sm">Detalji</a>
+                        </tr>
+                    </tbody>
+                </table>
+
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
