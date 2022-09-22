@@ -31,15 +31,26 @@ namespace Algebra_Seminar_Drdic.Controllers
         {
             ViewBag.Categories = _context.Categories.ToList();
 
-            if(categoryId != 0)
+            if (categoryId != 0)
             {
-                //NEKUZIM
-                List<Product> products = _context.Products.Where(p => _context.ProductCategories.Where(pc => pc.CategoryId == categoryId).Select(pc => pc.ProductId).ToList().Contains(p.Id)).ToList();
+                //NEKUZIM !!!! sam napravi
+                List<Product> products = _context.Products.Where
+                    (p => _context.ProductCategories.Where
+                    (pc => pc.CategoryId == categoryId).Select
+                    (pc => pc.ProductId).ToList().
+                    Contains(p.Id)).
+                    ToList();
+                
+                var categoryName = _context.Categories.FirstOrDefault(cn => cn.Id == categoryId).Id;
+                ViewBag.CategoryName = categoryName;
+
                 return View(products);
             }
+            
             else
             {
-               var products2 = _context.Products.ToList();
+                Random random = new Random();
+               var products2 = _context.Products.ToList().OrderBy(p => random.Next()).Take(10).ToList();
                 return View(products2);
             }
             

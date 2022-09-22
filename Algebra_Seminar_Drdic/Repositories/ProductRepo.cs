@@ -18,8 +18,16 @@ namespace Algebra_Seminar_Drdic.Repositories
 
         public Product GetProductById(int id)
         {
-            var product = _context.Products.SingleOrDefault(p => p.Id == id);
-            return product;
+            if(id != null)
+            {
+                var product = _context.Products.SingleOrDefault(p => p.Id == id);
+                return product;
+            }
+            else
+            {
+                return null;
+            }
+            
         }
     }
 }

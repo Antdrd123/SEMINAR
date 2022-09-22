@@ -112,6 +112,10 @@ namespace Algebra_Seminar_Drdic.Controllers
             var roles = _context.Roles.ToList();
             ViewBag.Roles = roles;
 
+            var roleId = _context.UserRoles.FirstOrDefault(ur => ur.UserId == id).RoleId;
+            var roleName = _context.Roles.FirstOrDefault(u => u.Id == roleId).Name;
+            ViewBag.UserRole = roleName;
+
             var user = _context.Users.FirstOrDefault(u =>u.Id == id);
 
             return View(user);
@@ -152,6 +156,19 @@ namespace Algebra_Seminar_Drdic.Controllers
                 oldUser.FirstName = user.FirstName;
                 oldUser.LastName = user.LastName;
 
+                var userRole = _context.UserRoles.SingleOrDefault(ur => ur.UserId == oldUser.Id);
+                _context.UserRoles.Remove(userRole);
+
+                _context.SaveChanges();
+
+                var roleid = _context.Roles.FirstOrDefault(ri => ri.Name == roleName).Id;
+
+                IdentityUserRole<string> userole = new IdentityUserRole<string>();
+                userole.UserId = user.Id;
+                userole.RoleId = roleid;
+
+
+                _context.UserRoles.Add(userole);
 
                 _context.Users.Update(oldUser);
                 //_context.Users.Add(user);

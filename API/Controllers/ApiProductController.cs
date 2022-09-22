@@ -41,6 +41,7 @@ namespace API.Controllers
                 {
                     throw new Exception("Rezultat nije pronađen!");
                 }
+                      
                 return Ok(result);
             }
             catch(Exception ex)

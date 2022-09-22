@@ -11,12 +11,23 @@
 
             <div class="input-group mb-3">
                     
-                <select class="form-select" id="floatingSelect" name="categoryId"> @*Zasto name?-zbog rezultata na bekendu*@
-                    <option value="" selected>All</option>
+                <select class="form-select" id="floatingSelect" name="categoryId">
+                    
+                    <option value="">All</option>
+                    
                     @foreach(var category in ViewBag.Categories)
                     { 
-                    <option value="@category.Id">@category.Title</option>
+                        @if(category.Id == ViewBag.CategoryName)
+                        {
+                            <option value="@category.Id" selected>@category.Title</option>
+                        }
+                        else
+                        {
+                            <option value="@category.Id">@category.Title</option>
+                        }
                     }
+                    
+                    
                 </select>
                    
                 <div class="input-group-append">
@@ -40,7 +51,7 @@
                     @if(item.ImageName != null)
                     {
                         <p>
-                            <img src="~/images/@item.ImageName" style="width:100%; height=250px">
+                            <img src="~/pictures/@item.ImageName" style="width:100%; height=250px">
                         </p>
                     }
 
