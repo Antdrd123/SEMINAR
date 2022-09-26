@@ -9,7 +9,7 @@ namespace Algebra_Seminar_Drdic.Models
 
         [Required]
         [StringLength(50, MinimumLength = 2)]
-        [Display(Name = "Kategorija")]
+        [Display(Name = "Category")]
         public string Title { get; set; }
     }
 }

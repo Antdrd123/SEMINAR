@@ -39,7 +39,7 @@ namespace API.Controllers
 
                 if(result == null)
                 {
-                    throw new Exception("Rezultat nije pronađen!");
+                    return StatusCode(StatusCodes.Status404NotFound, " Rezultat nije pronađen!");
                 }
                       
                 return Ok(result);
