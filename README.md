@@ -11,7 +11,6 @@ You're sections headers will be used to reference location of destination.
 
 - [Description](#description)
 - [How To Use](#how-to-use)
-- [References](#references)
 - [Author Info](#author-info)
 
 ---
@@ -31,8 +30,27 @@ Final project called Algebra_Seminar_Drdic is simple webshop with basic function
 
 ---
 
-## How To Use
+## How To Use (steps)
 
+Application download and adjustment is easy and simple, just make sure to follow the steps.
+
+#### Step 1:
+When in GitHub clone repository by opening code with Visual Studio or if you prefer other IDE, dowlnload zip file to your PC.
+
+##### Step 1.1 (only if you do not use Visual Studio):
+Unzip your file and open Algebra_Seminar_Drdic.sln.
+
+#### Step 2:
+Open preffered database management system (Microsoft SQL Server, MySQL...) and create new database with any name(ex. Drdic_Database). 
+
+#### Step 3:
+Open a solution in Visual Studio or preffered IDE. The solution consists of two projects(Algebra_Seminar_Drdic and API). When in project, first you have to change DefaultSettings in appsettings.json to your server in BOTH projects (ex. Server=localhost\\sqlexpress). Also, you have to change database to wanted one that you created earlier (ex. Database=Drdic_Database). If needed, leave "TrustedConnection=true", depending on your local properties.
+
+#### Step 4:
+In Package Manager Console type _**update-database**_ to automatically fill your created database with built-in data.
+
+#### Step 5:
+You are now ready to start the app. :)
 #### Installation
 This project consists of one solution with two projects(Algebra_Seminar_Drdic and API). When in project, first you have to change DefaultSettings in appsettings.json to your server in BOTH projects. If necessary, leave "TrustedConnection=true", depending on your local properties. After that, you should be set to start the app.
 
@@ -51,15 +69,7 @@ individual product by database code.
 
 ---
 
-## References
-<a id="1">[1]</a> 
-Troelsen, A., Japikse P. (2021). 
-Go to statement considered harmful. 
-Communications of the ACM, 11(3), 147-148.
 
-[Back To The Top](#read-me-template)
-
----
 
 
 
