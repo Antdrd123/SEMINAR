@@ -7,12 +7,10 @@ namespace Algebra_Seminar_Drdic.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger; //kaj je ovaj logger
         private readonly ApplicationDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
+        public HomeController(ApplicationDbContext context)
         {
-            _logger = logger;
             _context = context;
         }
 
@@ -33,7 +31,7 @@ namespace Algebra_Seminar_Drdic.Controllers
 
             if (categoryId != 0)
             {
-                //NEKUZIM !!!! sam napravi
+                
                 List<Product> products = _context.Products.Where
                     (p => _context.ProductCategories.Where
                     (pc => pc.CategoryId == categoryId).Select

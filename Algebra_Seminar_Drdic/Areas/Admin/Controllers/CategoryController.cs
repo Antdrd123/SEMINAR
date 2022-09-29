@@ -48,8 +48,6 @@ namespace Algebra_Seminar_Drdic.Areas.Admin.Controllers
                 var cat = _context.Categories.Add(category);
                 _context.SaveChanges();
 
-
-
                 return RedirectToAction(nameof(Index));
             }
             catch

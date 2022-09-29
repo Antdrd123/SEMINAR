@@ -81,12 +81,10 @@ namespace Algebra_Seminar_Drdic.Controllers
 
                 _context.SaveChanges();
 
-
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-
                 return RedirectToAction("Create");
             }
         }
@@ -177,17 +175,16 @@ namespace Algebra_Seminar_Drdic.Controllers
         {
             try
             {
-
                 var productCategory = _context.ProductCategories.FirstOrDefault(pc => pc.Id == product.Id);
                 _context.ProductCategories.Remove(productCategory);
 
                 var delete_product = _context.Products.SingleOrDefault(pr => pr.Id == product.Id);
 
-                
 
                 if (delete_product == null)
                 {
                     TempData["AlertMessageD"] = "Nepostojeći proizvod!";
+
                     return RedirectToAction("Delete");
                 }
                 _context.Products.Remove(delete_product);

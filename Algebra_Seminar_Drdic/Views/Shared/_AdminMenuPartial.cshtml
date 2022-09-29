@@ -4,11 +4,6 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
-@*
-    1.uvjet Korisnik MORA biti prijavljen!
-    2.uvjet: prijavljeni korisnik MORA imati ulogu admina
-*@
-
 @if(
     SignInManager.IsSignedIn(User) && 
     await UserManager.IsInRoleAsync(UserManager.GetUserAsync(User).Result, "Admin")
