@@ -1,0 +1,14 @@
+﻿
+@inject Algebra_Seminar_Drdic.Data.ApplicationDbContext dbcontext
+
+<div class="dropdown">
+        <a class="nav-link text-dark dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+        Categories
+        </a>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                @foreach(var category in dbcontext.Categories.ToList())
+        {
+            <li><a class="dropdown-item" type="button" asp-area="" asp-controller="Home" asp-action="Product" asp-route-categoryId="@category.Id">@category.Title</a></li>
+        }
+        </ul>
+    </div>

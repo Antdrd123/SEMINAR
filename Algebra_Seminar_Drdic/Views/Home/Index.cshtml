@@ -1,6 +1,53 @@
-﻿<div class="text-center">
+﻿@model List<Product>
+
+
+
+<div class="text-center">
     <h1 class="display-4"><b>Welcome to Dada-Panel</b></h1>
 
     
     <p>See more on <a href="https://www.instagram.com/sandipanel/?hl=hr">our official Instagram page!</a></p>
+</div>
+
+        <h2>Product list</h2>
+<hr />
+
+<div class="row">
+    @*Ispis svih proizvoda*@
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+
+                    @if (item.ImageName != null)
+                    {
+                        <p>
+                            <img src="~/pictures/@item.ImageName" style="width:100%; height=250px">
+                        </p>
+                    }
+
+                    <h5 class="card-title">@item.Title</h5>
+                    <p class="card-text">@item.Description</p>
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Price</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@item.Price kn</td>
+                                <td class="text-start"></td>
+                                <a href="@Url.Action("Details","Home", new {Id=@item.Id})"
+                               class="btn btn-primary btn-sm">Detalji</a>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
 </div>

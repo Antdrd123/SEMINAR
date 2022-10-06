@@ -14,9 +14,33 @@ namespace Algebra_Seminar_Drdic.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int categoryId)
         {
-           
+            ViewBag.Categories = _context.Categories.ToList();
+
+            if (categoryId != 0)
+            {
+
+                List<Product> products = _context.Products.Where
+                    (p => _context.ProductCategories.Where
+                    (pc => pc.CategoryId == categoryId).Select
+                    (pc => pc.ProductId).ToList().
+                    Contains(p.Id)).
+                    ToList();
+
+                var categoryName = _context.Categories.FirstOrDefault(cn => cn.Id == categoryId).Id;
+                ViewBag.CategoryName = categoryName;
+
+                return View(products);
+            }
+
+            else
+            {
+                Random random = new Random();
+                var products2 = _context.Products.ToList().OrderBy(p => random.Next()).Take(10).ToList();
+                return View(products2);
+            }
+
             return View();
         }
 
@@ -48,7 +72,7 @@ namespace Algebra_Seminar_Drdic.Controllers
             else
             {
                 Random random = new Random();
-               var products2 = _context.Products.ToList().OrderBy(p => random.Next()).Take(10).ToList();
+               var products2 = _context.Products.ToList().OrderBy(p => random.Next()).ToList();
                 return View(products2);
             }
             

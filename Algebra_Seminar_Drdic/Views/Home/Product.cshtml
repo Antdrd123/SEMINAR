@@ -1,39 +1,9 @@
 ﻿@model List<Product>
 
+
+
         <h2>Product list</h2>
 <hr />
-
-<div class="row mb-5">
-    
-   <div class="col-6">
-
-        <form method="GET" asp-area="" asp-controller="Home" asp-action="Product">
-
-            <div class="input-group mb-3">
-                    
-                <select class="form-select" id="floatingSelect" name="categoryId">
-                    
-                    <option value="">All</option>
-                    @foreach(var category in ViewBag.Categories)
-                    { 
-                        @if(category.Id == ViewBag.CategoryName)
-                        {
-                            <option value="@category.Id" selected>@category.Title</option>
-                        }
-                        else
-                        {
-                            <option value="@category.Id">@category.Title</option>
-                        }
-                    }
-                </select>
-
-                <div class="input-group-append">
-                    <button type="submit" class="btn btn-outline-secondary">Filter</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
 
 <div class="row">
     @*Ispis svih proizvoda*@
