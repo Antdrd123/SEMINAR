@@ -27,7 +27,7 @@ namespace Algebra_Seminar_Drdic.Controllers
         }
 
         // GET: CategoryController/Details/5
-        public ActionResult Details(string id) //??
+        public ActionResult Details(string id) 
         {
             var user = _context.Users.FirstOrDefault(u => u.Id == id);
             
@@ -56,7 +56,6 @@ namespace Algebra_Seminar_Drdic.Controllers
             {
                 TempData["AlertMessageC"] = "Ispunite sva polja!";
                 return RedirectToAction("Create");
-                
             }
             if (password != confirmPassword)
             {
@@ -150,6 +149,7 @@ namespace Algebra_Seminar_Drdic.Controllers
                 oldUser.Email = user.Email;
                 oldUser.FirstName = user.FirstName;
                 oldUser.LastName = user.LastName;
+                oldUser.Address = user.Address;
 
                 var userRole = _context.UserRoles.SingleOrDefault(ur => ur.UserId == oldUser.Id);
                 _context.UserRoles.Remove(userRole);
@@ -200,10 +200,8 @@ namespace Algebra_Seminar_Drdic.Controllers
                 var role = _context.Roles.FirstOrDefault(u => u.Id == userRole.RoleId).Name;
                 var user = _context.Users.Where(u => u.Id == id).FirstOrDefault();
                 
-                if(roleName == role)
-                    _context.UserRoles.Remove(userRole);
-                
-                
+                _context.UserRoles.Remove(userRole);
+               
 
                 _context.Users.Remove(user);
                 _context.SaveChanges();

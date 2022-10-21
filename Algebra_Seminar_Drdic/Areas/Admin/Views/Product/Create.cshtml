@@ -13,6 +13,12 @@
         <strong>Upozorenje!</strong> @TempData["AlertMessageF"]
     </div>
 }
+@if(TempData["AlertMessageL"] != null)
+{
+    <div class="alert alert-warning">
+        <strong>Upozorenje!</strong> @TempData["AlertMessageL"]
+    </div>
+}
 
 <h4>Product</h4>
 <hr />

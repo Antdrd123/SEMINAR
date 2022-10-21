@@ -27,7 +27,6 @@ namespace Algebra_Seminar_Drdic.Repositories
             {
                 return null;
             }
-            
         }
     }
 }

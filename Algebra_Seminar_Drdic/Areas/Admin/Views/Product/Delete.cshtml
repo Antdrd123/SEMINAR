@@ -47,14 +47,12 @@
 
             @foreach (var items in ViewBag.CategoriesDelete)
             {
-                <dt class="col-sm-2"></dt>
                 <dd class="col-sm-10">
                     @items
                 </dd>   
             }
         </dl>
     </dl>
-    
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />

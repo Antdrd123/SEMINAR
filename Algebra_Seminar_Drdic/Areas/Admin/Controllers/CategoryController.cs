@@ -97,9 +97,6 @@ namespace Algebra_Seminar_Drdic.Areas.Admin.Controllers
         {
             try
             {
-                //var productCategory = _context.ProductCategories.FirstOrDefault(pc => pc.Id == category.Id);
-                //_context.ProductCategories.Remove(productCategory);
-
                 _context.Categories.Remove(category);
                 _context.SaveChanges();
 

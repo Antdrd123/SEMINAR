@@ -50,6 +50,12 @@ namespace Algebra_Seminar_Drdic.Controllers
                 return RedirectToAction("Create");
             }
 
+            if (picture == null)
+            {
+                TempData["AlertMessageL"] = "Odaberite sliku proizvoda!";
+                return RedirectToAction("Create");
+            }
+
             try
             {
 
@@ -62,8 +68,6 @@ namespace Algebra_Seminar_Drdic.Controllers
                     picture.CopyTo(stream);
                 }
                 product.ImageName = image_name;
-
-
 
 
                 _context.Products.Add(product);
@@ -157,12 +161,12 @@ namespace Algebra_Seminar_Drdic.Controllers
         {
             var product = _context.Products.SingleOrDefault(p => p.Id == id);
 
-
             if (product == null)
             {
                 return RedirectToAction("Index", new { msg = "Proizvod ne postoji!" });
             }
             var categories = _context.ProductCategories.Where(pc => pc.ProductId == id).Select(pc => pc.Category.Title);
+
             ViewBag.CategoriesDelete = categories;
 
             return View(product);

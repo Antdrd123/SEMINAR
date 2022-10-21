@@ -14,34 +14,12 @@ namespace Algebra_Seminar_Drdic.Controllers
             _context = context;
         }
 
-        public IActionResult Index(int categoryId)
+        public IActionResult Index()
         {
-            ViewBag.Categories = _context.Categories.ToList();
-
-            if (categoryId != 0)
-            {
-
-                List<Product> products = _context.Products.Where
-                    (p => _context.ProductCategories.Where
-                    (pc => pc.CategoryId == categoryId).Select
-                    (pc => pc.ProductId).ToList().
-                    Contains(p.Id)).
-                    ToList();
-
-                var categoryName = _context.Categories.FirstOrDefault(cn => cn.Id == categoryId).Id;
-                ViewBag.CategoryName = categoryName;
-
-                return View(products);
-            }
-
-            else
-            {
-                Random random = new Random();
-                var products2 = _context.Products.ToList().OrderBy(p => random.Next()).Take(10).ToList();
-                return View(products2);
-            }
-
-            return View();
+            Random random = new Random();
+            var products = _context.Products.ToList().OrderBy(p => random.Next()).Take(10).ToList();
+            return View(products);
+            
         }
 
         public IActionResult Privacy()
@@ -51,31 +29,27 @@ namespace Algebra_Seminar_Drdic.Controllers
 
         public IActionResult Product(int categoryId)
         {
-            ViewBag.Categories = _context.Categories.ToList();
-
+            
             if (categoryId != 0)
             {
-                
+
                 List<Product> products = _context.Products.Where
                     (p => _context.ProductCategories.Where
                     (pc => pc.CategoryId == categoryId).Select
                     (pc => pc.ProductId).ToList().
                     Contains(p.Id)).
                     ToList();
-                
-                var categoryName = _context.Categories.FirstOrDefault(cn => cn.Id == categoryId).Id;
-                ViewBag.CategoryName = categoryName;
 
                 return View(products);
             }
-            
+
             else
             {
                 Random random = new Random();
-               var products2 = _context.Products.ToList().OrderBy(p => random.Next()).ToList();
+                var products2 = _context.Products.ToList().OrderBy(p => random.Next()).ToList();
                 return View(products2);
             }
-            
+
         }
 
         public IActionResult Details(int id)
