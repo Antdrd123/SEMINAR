@@ -31,10 +31,13 @@ namespace Algebra_Seminar_Drdic.Controllers
         {
             var user = _context.Users.FirstOrDefault(u => u.Id == id);
             
-            var roleId = _context.UserRoles.FirstOrDefault(ur => ur.UserId == id).RoleId;
-            var roleName = _context.Roles.FirstOrDefault(u => u.Id == roleId).Name;
-            ViewBag.UserRole = roleName;
-
+            var role = _context.UserRoles.FirstOrDefault(ur => ur.UserId == id);
+            if (role != null)
+            {
+                var roleName = _context.Roles.FirstOrDefault(r => r.Id == role.RoleId).Name;
+                ViewBag.UserRole = roleName;
+            }
+            
             return View(user);
         }
 
@@ -106,9 +109,13 @@ namespace Algebra_Seminar_Drdic.Controllers
             var roles = _context.Roles.ToList();
             ViewBag.Roles = roles;
 
-            var roleId = _context.UserRoles.FirstOrDefault(ur => ur.UserId == id).RoleId;
-            var roleName = _context.Roles.FirstOrDefault(u => u.Id == roleId).Name;
-            ViewBag.UserRole = roleName;
+
+           var role = _context.UserRoles.FirstOrDefault(ur => ur.UserId == id);
+            if (role != null)
+            {
+                var roleName = _context.Roles.FirstOrDefault(r => r.Id == role.RoleId).Name;
+                ViewBag.UserRole = roleName;
+            }
 
             var user = _context.Users.FirstOrDefault(u =>u.Id == id);
 
@@ -152,7 +159,11 @@ namespace Algebra_Seminar_Drdic.Controllers
                 oldUser.Address = user.Address;
 
                 var userRole = _context.UserRoles.SingleOrDefault(ur => ur.UserId == oldUser.Id);
-                _context.UserRoles.Remove(userRole);
+                if(userRole != null)
+                {
+                    _context.UserRoles.Remove(userRole);
+                }
+                
 
                 _context.SaveChanges();
 
@@ -180,9 +191,12 @@ namespace Algebra_Seminar_Drdic.Controllers
         // GET: CategoryController/Delete/5
         public ActionResult Delete(string id)
         {
-            var roleId = _context.UserRoles.FirstOrDefault(ri => ri.UserId == id).RoleId;
-            var userRole = _context.Roles.FirstOrDefault(ur => ur.Id == roleId).Name;
-            ViewBag.UserRole = userRole;
+            var role = _context.UserRoles.FirstOrDefault(ur => ur.UserId == id);
+            if (role != null)
+            {
+                var roleName = _context.Roles.FirstOrDefault(r => r.Id == role.RoleId).Name;
+                ViewBag.UserRole = roleName;
+            }
 
             var user = _context.Users.FirstOrDefault(u => u.Id == id);
             return View(user);
@@ -195,12 +209,16 @@ namespace Algebra_Seminar_Drdic.Controllers
         {
             try
             {
-             
+
                 var userRole = _context.UserRoles.SingleOrDefault(ur => ur.UserId == id);
-                var role = _context.Roles.FirstOrDefault(u => u.Id == userRole.RoleId).Name;
+                if (userRole != null)
+                {
+                    _context.UserRoles.Remove(userRole);
+                }
+
                 var user = _context.Users.Where(u => u.Id == id).FirstOrDefault();
                 
-                _context.UserRoles.Remove(userRole);
+                
                
 
                 _context.Users.Remove(user);
